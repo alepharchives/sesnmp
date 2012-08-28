@@ -243,6 +243,8 @@ dec_value([65 | Bytes]) ->
     {Value, Rest} = dec_integer_notag(Bytes),
     if Value >= 0, Value =< 4294967295 ->
 	    {{'Counter32', Value}, Rest};
+        Value >= -2147483648, Value < 0 ->
+            {{'Counter32', 4294967296 + Value}, Rest};
        true ->
 	    exit({error, {bad_counter32, Value}})
     end;
