@@ -66,6 +66,10 @@ handle_info({'DOWN', _MonRef, process, Pid, _Reason},
     {NetIf, NetIfRef} = do_init_net_if(NetIfOpts),
     {noreply, State#state{net_if = NetIf, net_if_ref = NetIfRef}};
 
+handle_info({snmp_error, ErrorInfo, Addr, Port}, State) ->
+    ?WARNING("snmp_error from ~p:~p, error_info: ~n~p", [Addr, Port, ErrorInfo]),
+    {noreply, State};
+
 handle_info(Info, State) ->
     {stop, {badinfo, Info}, State}.
 
